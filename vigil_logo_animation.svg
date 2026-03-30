@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <style>
+    .fox-part {
+      opacity: 0;
+      animation: foxIn 0.6s ease-out forwards;
+    }
+    .fp-1 { animation-delay: 0s; }
+    .fp-2 { animation-delay: 0.12s; }
+    .fp-3 { animation-delay: 0.24s; }
+    .fp-4 { animation-delay: 0.36s; }
+    .fp-5 { animation-delay: 0.48s; }
+    @keyframes foxIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fox-glow {
+      animation: foxPulse 3s ease-in-out infinite;
+    }
+    @keyframes foxPulse {
+      0%, 100% { filter: drop-shadow(0 0 0px rgba(255, 81, 1, 0)); }
+      50% { filter: drop-shadow(0 0 12px rgba(255, 81, 1, 0.25)); }
+    }
+  </style>
+  <rect width="256" height="256" fill="none"/>
+  <g class="fox-glow">
+    <path class="fox-part fp-1" d="m15.97 11.11v73.15c0 6.13 2.29 11.37 6.99 14.96l47.13 37.57c5 4.03 11.06 3.29 14.88-0.41l44.31-37.63c4.84-4.14 6.96-9.86 6.96-15.71v-71.31c0-4.3-3.06-5.44-5.31-3.51l-50.32 42.46c-2.85 2.27-4.99 0.7-7.74-1.62l-50.42-40.41c-3.3-2.79-6.48-1.78-6.48 2.46z" fill="#FF5101" stroke="#FF5101" stroke-miterlimit="10" stroke-width=".5"/>
+    <path class="fox-part fp-2" d="m238.5 70.96v68.62c0 6.44-3.53 11.83-7.91 15.32l-30.96 24.97c-3.27 2.62-5.39 0.3-5.39-2.24v-67.17c0-6.57 1.94-10.83 6.64-15.03l33.81-26.89c2.58-1.98 3.81-0.33 3.81 2.42z" fill="#FF5101" stroke="#FF5101" stroke-miterlimit="10" stroke-width=".5"/>
+    <path class="fox-part fp-3" d="m23.84 127.9v111.9c0 5.46 4.9 8.54 8.12 8.26h29.25c5.6 0 7.36-5.01 7.36-7.84v-72.68c0-6.62-2.86-11.65-6.31-14.62l-32.03-27.55c-3.48-2.99-6.39-1.75-6.39 2.51z" fill="#FF5101" stroke="#FF5101" stroke-miterlimit="10" stroke-width=".5"/>
+    <path class="fox-part fp-4" d="m124.9 124.1-31.81 27.42c-4.18 3.69-7.03 8.55-7.03 15.59v72.75c0 5.68 4.13 8.23 7.58 8.23h27.74c5.82 0 8.01-5.5 8.01-8.7v-111.6c0-2.99-2.13-4.94-4.49-3.68z" fill="#FF5101" stroke="#FF5101" stroke-miterlimit="10" stroke-width=".5"/>
+    <path class="fox-part fp-5" d="m146.8 146.2v93.49c0 5.13 4.51 8.4 7.59 8.4h28.51c4.7 0 7.34-4.36 7.34-8.31v-26.2c0-5.79-3.17-13.56-5.45-16.49l-34.8-52.68c-1.76-2.34-3.19-1.34-3.19 1.79z" fill="#FF5101" stroke="#FF5101" stroke-miterlimit="10" stroke-width=".5"/>
+  </g>
+</svg>

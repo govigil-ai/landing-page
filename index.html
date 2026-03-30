@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vigil — GTM Intelligence Platform</title>
+  <link rel="icon" type="image/svg+xml" href="logo_vigil_done.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --bg: rgb(255, 253, 252);
+      --primary: rgb(255, 81, 1);
+      --border: rgb(204, 204, 204);
+      --black: rgb(24, 24, 24);
+      --grey-dark: rgb(61, 61, 61);
+      --grey-mid: rgb(145, 145, 145);
+      --white: rgb(255, 255, 255);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--black);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    body.page-ready { opacity: 1; }
+
+    /* ── Navbar ── */
+    .navbar {
+      background: var(--bg);
+      padding: 0 60px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .navbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--black);
+    }
+    .logo-icon { width: 36px; height: 36px; }
+    .logo-text {
+      font-family: Georgia, serif;
+      font-size: 24px;
+      line-height: 1.5;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px;
+      color: var(--black);
+      text-decoration: none;
+    }
+    .nav-links a:hover { color: var(--grey-dark); }
+    .btn {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: 4px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: var(--primary); color: var(--white); }
+    .btn-secondary { background: var(--white); color: var(--black); border: 0.5px solid var(--border); }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 0 60px;
+    }
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      border-left: 0.5px solid var(--border);
+      border-right: 0.5px solid var(--border);
+      padding: 80px 40px 96px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-copy {
+      max-width: 620px;
+      text-align: left;
+      padding-right: 80px;
+    }
+    .hero-fox-scene {
+      position: absolute;
+      right: 18px;
+      bottom: 0;
+      width: 620px;
+      height: 620px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .hero-fox-img {
+      width: 100%;
+      height: auto;
+      max-height: none;
+      object-fit: contain;
+      object-position: top right;
+      animation: heroFadeUp 1s ease-out 0.3s both;
+      transform-origin: bottom right;
+    }
+    .hero h1 {
+      font-family: Georgia, serif;
+      font-size: 62px;
+      font-weight: normal;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      max-width: 620px;
+      margin: 0 0 30px;
+      animation: heroFadeUp 0.8s ease-out 0.1s both;
+    }
+    .hero p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--grey-dark);
+      max-width: 480px;
+      margin: 0 0 40px;
+      animation: heroFadeUp 0.8s ease-out 0.25s both;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: flex-start;
+      animation: heroFadeUp 0.8s ease-out 0.4s both;
+    }
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Floating background particles ── */
+    .hero-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      display: none;
+    }
+    .hero-copy { position: relative; z-index: 2; }
+    .hero-fox-scene { z-index: 2; }
+    .particle {
+      position: absolute;
+      will-change: transform;
+      color: var(--c, #ff5101);
+    }
+    .particle svg {
+      display: block;
+      transform: scale(1.28);
+      transform-origin: center;
+    }
+    .particle .cookie-wedge-left,
+    .particle .cookie-wedge-right {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+    /* Animation parked for now so it can be restored later.
+    .particle .cookie-wedge-left { animation: cookieOpenLeft 1.9s ease-in-out infinite; }
+    .particle .cookie-wedge-right { animation: cookieOpenRight 1.9s ease-in-out infinite; }
+    */
+    .particle.zip-right {
+      /* animation-name: zipRight;
+      animation-duration: calc(var(--speed) * 3.6);
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-delay: calc(var(--delay, 0s) * -1); */
+    }
+    .particle.zip-left {
+      /* animation-name: zipLeft;
+      animation-duration: calc(var(--speed) * 3.6);
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-delay: calc(var(--delay, 0s) * -1); */
+    }
+    @keyframes zipRight {
+      0% { transform: translateX(-180px); opacity: 0; }
+      2% { opacity: var(--op, 0.4); }
+      98% { opacity: var(--op, 0.4); }
+      100% { transform: translateX(calc(100vw + 180px)); opacity: 0; }
+    }
+    @keyframes zipLeft {
+      0% { transform: translateX(calc(100vw + 180px)); opacity: 0; }
+      2% { opacity: var(--op, 0.4); }
+      98% { opacity: var(--op, 0.4); }
+      100% { transform: translateX(-180px); opacity: 0; }
+    }
+    @keyframes cookieOpenLeft {
+      0%, 100% { transform: translateX(0) rotate(0deg) scaleY(1); }
+      50% { transform: translateX(-1.4px) rotate(-14deg) scaleY(0.95); }
+    }
+    @keyframes cookieOpenRight {
+      0%, 100% { transform: translateX(0) rotate(0deg) scaleY(1); }
+      50% { transform: translateX(1.4px) rotate(14deg) scaleY(0.95); }
+    }
+    /* ── Label component ── */
+    .label {
+      font-family: 'Fragment Mono', monospace;
+      font-size: 12px;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--grey-mid);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .label::before {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ── In Action section ── */
+    .in-action {
+      padding: 40px 60px;
+    }
+    .in-action-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      border: 0.5px solid var(--border);
+      border-bottom: none;
+      overflow: visible;
+    }
+
+    /* Section header */
+    .ia-header {
+      padding: 60px 20px 40px;
+    }
+    .ia-header .label {
+      margin-bottom: 20px;
+    }
+    .ia-header h2 {
+      font-family: Georgia, serif;
+      font-size: 40px;
+      font-weight: normal;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      max-width: 700px;
+      margin-bottom: 16px;
+    }
+    .ia-header p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--grey-dark);
+      max-width: 400px;
+    }
+
+    /* Two-column rows */
+    .ia-row {
+      display: flex;
+      border-top: 0.5px solid var(--border);
+    }
+    .ia-row.reverse-desktop {
+      flex-direction: row-reverse;
+    }
+    .ia-col {
+      width: 50%;
+    }
+    .ia-col:first-child {
+      border-right: 0.5px solid var(--border);
+    }
+    .ia-row.reverse-desktop .ia-col:first-child {
+      border-right: none;
+    }
+    .ia-row.reverse-desktop .ia-col:last-child {
+      border-right: 0.5px solid var(--border);
+    }
+
+    /* Text block inside column */
+    .ia-text {
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .ia-text .label {
+      margin-bottom: 0;
+    }
+    .ia-text h3 {
+      font-family: Georgia, serif;
+      font-size: 28px;
+      font-weight: normal;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      max-width: 400px;
+    }
+    .ia-text p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--grey-dark);
+      max-width: 400px;
+    }
+
+    /* Visual block inside column */
+    .ia-visual {
+      padding: 24px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+    }
+    .ia-visual svg {
+      width: 100%;
+      max-width: 460px;
+      height: auto;
+      display: block;
+    }
+    .ia-text.landscape-text {
+      position: relative;
+      overflow: hidden;
+      min-height: 300px;
+      justify-content: center;
+      background: linear-gradient(140deg, #fffdfc, #fff9f6);
+    }
+    .ia-text.landscape-text::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255, 253, 252, 0.9), rgba(255, 253, 252, 0.72) 45%, rgba(255, 253, 252, 0.55));
+      z-index: 1;
+    }
+    .ia-text.landscape-text > .label,
+    .ia-text.landscape-text > h3,
+    .ia-text.landscape-text > p {
+      position: relative;
+      z-index: 2;
+    }
+    .landscape-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── CTA Banner ── */
+    .cta-banner {
+      background: var(--black);
+      padding: 0 60px;
+    }
+    .cta-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      border-left: 0.5px solid var(--grey-dark);
+      border-right: 0.5px solid var(--grey-dark);
+      border-bottom: 0.5px solid var(--grey-dark);
+      padding: 80px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-inner h2 {
+      font-family: Georgia, serif;
+      font-size: 40px;
+      font-weight: normal;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      max-width: 600px;
+      margin-bottom: 16px;
+    }
+    .cta-inner p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--grey-mid);
+      max-width: 400px;
+      margin-bottom: 24px;
+    }
+    .cta-foxmark {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      width: 320px;
+      height: 320px;
+      opacity: 0.92;
+      object-fit: contain;
+      transform: translateY(-50%);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--black);
+      padding: 0 60px;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 32px;
+    }
+    .footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .footer-logo {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .footer-logo .logo {
+      color: var(--white);
+    }
+    .footer-logo p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--grey-mid);
+    }
+    .footer-socials {
+      display: flex;
+      gap: 16px;
+    }
+    .footer-socials a {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 0.5px solid var(--grey-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: border-color 0.15s;
+    }
+    .footer-socials a:hover {
+      border-color: var(--grey-mid);
+    }
+    .footer-socials svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--grey-mid);
+    }
+    .footer-right {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px 60px;
+    }
+    .footer-col h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer-col a {
+      font-size: 14px;
+      color: var(--grey-mid);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .footer-col a:hover { color: var(--white); }
+
+    /* Footer bottom row */
+    .footer-bottom {
+      background: var(--black);
+      padding: 0 60px;
+    }
+    .footer-bottom-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      border-top: 0.5px solid var(--grey-dark);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-bottom span {
+      font-family: 'Fragment Mono', monospace;
+      font-size: 12px;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--grey-mid);
+    }
+
+    /* ── Graph Motion ── */
+    .landscape-graph {
+      max-width: 460px;
+      width: 100%;
+      transform: none;
+      filter: none;
+    }
+    .pop-box {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: popBox 2.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+    }
+    .pop-box.delay-1 { animation-delay: 0.2s; }
+    .pop-box.delay-2 { animation-delay: 0.45s; }
+    .pop-box.delay-3 { animation-delay: 0.7s; }
+    .pop-box.delay-4 { animation-delay: 0.95s; }
+    @keyframes popBox {
+      0%, 100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.02) translateY(-1px);
+        opacity: 0.95;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pop-box,
+      .landscape-graph { transform: none !important; }
+      .io-diagram .io-link,
+      .io-diagram .io-chip,
+      .io-diagram .action-card { animation: none !important; opacity: 1 !important; }
+      body {
+        opacity: 1 !important;
+        transition: none !important;
+      }
+    }
+
+    /* ── Scroll animations ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+      will-change: transform, opacity;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .ia-row.fade-in:nth-child(2) { transition-delay: 0.1s; }
+    .ia-row.fade-in:nth-child(3) { transition-delay: 0.2s; }
+
+    /* Inbound/Outbound diagram specific animation */
+    .io-diagram .pop-box {
+      animation: ioPop 4.6s ease-in-out infinite;
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+    }
+    .io-diagram .io-link {
+      animation: ioLinkFlow 3.8s ease-in-out infinite;
+    }
+    .io-diagram .io-chip {
+      animation: ioChipPulse 3.6s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+      will-change: transform, opacity;
+    }
+    @keyframes ioPop {
+      0%, 100% { transform: translate3d(0, 0, 0); opacity: 1; }
+      50% { transform: translate3d(0, -1.5px, 0); opacity: 0.965; }
+    }
+    @keyframes ioLinkFlow {
+      0%, 100% { opacity: 0.38; }
+      50% { opacity: 0.78; }
+    }
+    @keyframes ioChipPulse {
+      0%, 100% { opacity: 0.9; transform: scale(1); }
+      50% { opacity: 1; transform: scale(0.985); }
+    }
+
+    /* Staggered card slide-in for action items */
+    .io-diagram .action-card {
+      transform-box: fill-box;
+      transform-origin: center left;
+      opacity: 0;
+      animation: cardSlideIn 0.6s ease-out forwards;
+    }
+    .io-diagram .action-card.d1 { animation-delay: 0.3s; }
+    .io-diagram .action-card.d2 { animation-delay: 0.5s; }
+    .io-diagram .action-card.d3 { animation-delay: 0.7s; }
+    .io-diagram .action-card.d4 { animation-delay: 0.9s; }
+    @keyframes cardSlideIn {
+      from { opacity: 0; transform: translateX(-8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .navbar { padding: 0 16px; }
+      .nav-links { display: none; }
+      .hero { padding: 0 16px; }
+      .hero-inner {
+        padding: 50px 20px 72px;
+      }
+      .hero-copy {
+        max-width: 100%;
+        padding-right: 0;
+      }
+      .hero h1 { font-size: 38px; }
+      .hero-fox-scene {
+        right: 8px;
+        bottom: 0;
+        width: 260px;
+        height: 260px;
+      }
+      .hero-buttons { flex-wrap: wrap; }
+      .in-action { padding: 40px 16px; }
+      .ia-header h2 { font-size: 28px; }
+      .ia-row { flex-direction: column; }
+      .ia-row.reverse-desktop { flex-direction: column; }
+      .ia-row.reverse-desktop .ia-col:last-child { border-right: none; }
+      .ia-col { width: 100%; }
+      .ia-col:first-child { border-right: none; border-bottom: 0.5px solid var(--border); }
+      .ia-text.landscape-text { min-height: 250px; }
+      .cta-banner { padding: 0 16px; }
+      .cta-inner h2 { font-size: 28px; }
+      .cta-foxmark { display: none; }
+      .footer { padding: 0 16px; }
+      .footer-inner { flex-direction: column; }
+      .footer-right { grid-template-columns: repeat(2, 1fr); }
+      .footer-bottom { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body id="top">
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="/" class="logo">
+        <img class="logo-icon" src="vigil_logo_animation.svg" alt="Vigil logo">
+        <span class="logo-text">Vigil</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#top">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <a href="/waitlist" class="btn btn-primary">Join waitlist</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-particles" aria-hidden="true">
+        <!-- fortune-cookie wedges -->
+        <div class="particle zip-right" style="top:6%;--speed:3s;--delay:0s;--op:0.35;--c:#ff5101;"><svg width="18" height="14" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-left" style="top:10%;--speed:3.5s;--delay:1.2s;--op:0.25;--c:#4e8fff;"><svg width="14" height="11" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-right" style="top:15%;--speed:4s;--delay:0.5s;--op:0.2;--c:#3aa96a;"><svg width="10" height="8" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-left" style="top:22%;--speed:2.8s;--delay:0.8s;--op:0.3;--c:#ff5101;"><svg width="16" height="12" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-right" style="top:26%;--speed:3.2s;--delay:2s;--op:0.2;--c:#3aa96a;"><svg width="12" height="9" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-left" style="top:20%;--speed:4.5s;--delay:3s;--op:0.15;--c:#ff5101;"><svg width="9" height="7" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-right" style="top:34%;--speed:3.6s;--delay:0.3s;--op:0.3;--c:#4e8fff;"><svg width="19" height="14" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-left" style="top:38%;--speed:2.5s;--delay:1.5s;--op:0.35;--c:#ff5101;"><svg width="16" height="12" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-right" style="top:36%;--speed:3.8s;--delay:2.8s;--op:0.18;--c:#4e8fff;"><svg width="9" height="7" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-left" style="top:45%;--speed:3.3s;--delay:0.2s;--op:0.25;--c:#3aa96a;"><svg width="18" height="14" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-right" style="top:48%;--speed:2.6s;--delay:1.8s;--op:0.3;--c:#ff5101;"><svg width="14" height="11" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-left" style="top:50%;--speed:4.2s;--delay:3.5s;--op:0.15;--c:#3aa96a;"><svg width="9" height="7" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-right" style="top:56%;--speed:3s;--delay:0.7s;--op:0.3;--c:#4e8fff;"><svg width="16" height="12" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-left" style="top:60%;--speed:2.9s;--delay:2.2s;--op:0.25;--c:#ff5101;"><svg width="19" height="14" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-right" style="top:58%;--speed:3.4s;--delay:0s;--op:0.2;--c:#ff5101;"><svg width="10" height="8" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-left" style="top:67%;--speed:3.1s;--delay:1s;--op:0.35;--c:#3aa96a;"><svg width="14" height="11" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-right" style="top:72%;--speed:2.7s;--delay:2.5s;--op:0.25;--c:#4e8fff;"><svg width="18" height="14" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-left" style="top:70%;--speed:4s;--delay:0.4s;--op:0.15;--c:#4e8fff;"><svg width="9" height="7" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-right" style="top:78%;--speed:3.5s;--delay:1.6s;--op:0.3;--c:#ff5101;"><svg width="16" height="12" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-left" style="top:82%;--speed:2.8s;--delay:0.6s;--op:0.2;--c:#4e8fff;"><svg width="12" height="9" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-right" style="top:80%;--speed:3.9s;--delay:3.2s;--op:0.18;--c:#3aa96a;"><svg width="9" height="7" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-left" style="top:88%;--speed:3.2s;--delay:0.9s;--op:0.3;--c:#ff5101;"><svg width="18" height="14" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-right" style="top:92%;--speed:2.6s;--delay:2.1s;--op:0.25;--c:#3aa96a;"><svg width="14" height="11" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+        <div class="particle zip-left" style="top:90%;--speed:4.3s;--delay:3.8s;--op:0.15;--c:#ff5101;"><svg width="9" height="7" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
+      </div>
+      <div class="hero-copy">
+        <h1>Your intelligent GTM platform.</h1>
+        <p>Vigil is your competitive intelligence system: monitor competitors, track every move, and turn those signals into marketing actions your team can ship this week.</p>
+        <div class="hero-buttons">
+          <a href="/waitlist" class="btn btn-primary">Join waitlist</a>
+          <a href="/contact" class="btn btn-secondary">Request a demo</a>
+        </div>
+      </div>
+      <div class="hero-fox-scene">
+        <img class="hero-fox-img" src="hero-fox.png" alt="Vigil fox">
+      </div>
+    </div>
+  </section>
+
+  <!-- In Action -->
+  <div id="features" class="in-action">
+    <div class="in-action-container">
+
+      <!-- Row 1: Continuous Ingestion -->
+      <div class="ia-row">
+        <div class="ia-col">
+          <div class="ia-text">
+            <div class="label">Ingestion</div>
+            <h3>Continuous ingestion from every channel</h3>
+            <p>Websites, pricing pages, LinkedIn, G2, Capterra, API docs, and changelogs — all monitored and diffed on a schedule.</p>
+          </div>
+        </div>
+        <div class="ia-col">
+          <div class="ia-visual">
+            <svg class="io-diagram" viewBox="0 0 460 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Source cards with icons -->
+              <g>
+                <rect x="16" y="16" width="170" height="48" rx="10" fill="#fff" stroke="#e2e2e2">
+                  <animate attributeName="stroke" values="#e2e2e2;#ff5101;#e2e2e2" dur="2.4s" begin="0s" repeatCount="indefinite"/>
+                </rect>
+                <rect x="28" y="28" width="24" height="24" rx="6" fill="#fff3ee"/>
+                <circle cx="40" cy="40" r="4" fill="#ff5101"/>
+                <text x="62" y="37" font-family="'Fragment Mono',monospace" font-size="7.5" fill="#919191">WEBSITES</text>
+                <text x="62" y="50" font-family="Inter,sans-serif" font-size="10" fill="#181818" font-weight="500">Competitor Pages</text>
+              </g>
+              <g>
+                <rect x="16" y="76" width="170" height="48" rx="10" fill="#fff" stroke="#e2e2e2">
+                  <animate attributeName="stroke" values="#e2e2e2;#4e8fff;#e2e2e2" dur="2.4s" begin="0.5s" repeatCount="indefinite"/>
+                </rect>
+                <rect x="28" y="88" width="24" height="24" rx="6" fill="#eef4ff"/>
+                <circle cx="40" cy="100" r="4" fill="#4e8fff"/>
+                <text x="62" y="97" font-family="'Fragment Mono',monospace" font-size="7.5" fill="#919191">SOCIAL</text>
+                <text x="62" y="110" font-family="Inter,sans-serif" font-size="10" fill="#181818" font-weight="500">LinkedIn &amp; Twitter</text>
+              </g>
+              <g>
+                <rect x="16" y="136" width="170" height="48" rx="10" fill="#fff" stroke="#e2e2e2">
+                  <animate attributeName="stroke" values="#e2e2e2;#3aa96a;#e2e2e2" dur="2.4s" begin="1s" repeatCount="indefinite"/>
+                </rect>
+                <rect x="28" y="148" width="24" height="24" rx="6" fill="#edfbf3"/>
+                <circle cx="40" cy="160" r="4" fill="#3aa96a"/>
+                <text x="62" y="157" font-family="'Fragment Mono',monospace" font-size="7.5" fill="#919191">REVIEWS</text>
+                <text x="62" y="170" font-family="Inter,sans-serif" font-size="10" fill="#181818" font-weight="500">G2 &amp; Capterra</text>
+              </g>
+              <g>
+                <rect x="16" y="196" width="170" height="48" rx="10" fill="#fff" stroke="#e2e2e2">
+                  <animate attributeName="stroke" values="#e2e2e2;#f59e0b;#e2e2e2" dur="2.4s" begin="1.5s" repeatCount="indefinite"/>
+                </rect>
+                <rect x="28" y="208" width="24" height="24" rx="6" fill="#fef7ee"/>
+                <circle cx="40" cy="220" r="4" fill="#f59e0b"/>
+                <text x="62" y="217" font-family="'Fragment Mono',monospace" font-size="7.5" fill="#919191">SEARCH</text>
+                <text x="62" y="230" font-family="Inter,sans-serif" font-size="10" fill="#181818" font-weight="500">Rankings &amp; Keywords</text>
+              </g>
+              <g>
+                <rect x="16" y="256" width="170" height="34" rx="10" fill="#fafafa" stroke="#e8e8e8" stroke-dasharray="4 4">
+                  <animate attributeName="stroke" values="#e8e8e8;#cccccc;#e8e8e8" dur="2.4s" begin="2s" repeatCount="indefinite"/>
+                </rect>
+                <text x="101" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" fill="#b0b0b0">+ API docs, changelogs...</text>
+              </g>
+
+              <!-- Animated flow lines -->
+              <path d="M186 40 Q230 40 260 80" stroke="#ff5101" stroke-width="1" fill="none" opacity="0.2">
+                <animate attributeName="opacity" values="0.12;0.4;0.12" dur="2s" begin="0s" repeatCount="indefinite"/>
+              </path>
+              <path d="M186 100 Q230 100 260 110" stroke="#4e8fff" stroke-width="1" fill="none" opacity="0.2">
+                <animate attributeName="opacity" values="0.12;0.4;0.12" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+              </path>
+              <path d="M186 160 Q230 160 260 140" stroke="#3aa96a" stroke-width="1" fill="none" opacity="0.2">
+                <animate attributeName="opacity" values="0.12;0.4;0.12" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+              </path>
+              <path d="M186 220 Q230 200 260 170" stroke="#f59e0b" stroke-width="1" fill="none" opacity="0.2">
+                <animate attributeName="opacity" values="0.12;0.4;0.12" dur="2s" begin="0.9s" repeatCount="indefinite"/>
+              </path>
+
+              <!-- Central hub -->
+              <rect x="258" y="60" width="186" height="160" rx="14" fill="#fff" stroke="#ffc9aa" stroke-width="0.9">
+              </rect>
+              <rect x="274" y="76" width="154" height="26" rx="13" fill="#fff3ee" stroke="#ffe2d2">
+                <animate attributeName="fill" values="#fff3ee;#ffe8d6;#fff3ee" dur="3s" begin="0.3s" repeatCount="indefinite"/>
+              </rect>
+              <text x="351" y="94" text-anchor="middle" font-family="'Fragment Mono',monospace" font-size="10" fill="#ff5101">Vigil Intelligence</text>
+
+              <!-- Sequential process steps -->
+              <text x="282" y="124" font-family="Inter,sans-serif" font-size="9" fill="#181818" font-weight="600">1. Ingest</text>
+              <rect x="282" y="128" width="140" height="3" rx="1.5" fill="#ff5101" opacity="0.12"/>
+              <rect x="282" y="128" width="0" height="3" rx="1.5" fill="#ff5101" opacity="0.8">
+                <animate attributeName="width" values="0;140;140" keyTimes="0;0.16;1" dur="4.8s" begin="0s" repeatCount="indefinite"/>
+              </rect>
+
+              <text x="282" y="150" font-family="Inter,sans-serif" font-size="9" fill="#181818" font-weight="600">2. Diff</text>
+              <rect x="282" y="154" width="140" height="3" rx="1.5" fill="#ff5101" opacity="0.12"/>
+              <rect x="282" y="154" width="0" height="3" rx="1.5" fill="#ff5101" opacity="0.8">
+                <animate attributeName="width" values="0;0;140;140" keyTimes="0;0.25;0.41;1" dur="4.8s" begin="0s" repeatCount="indefinite"/>
+              </rect>
+
+              <text x="282" y="176" font-family="Inter,sans-serif" font-size="9" fill="#181818" font-weight="600">3. Reason</text>
+              <rect x="282" y="180" width="140" height="3" rx="1.5" fill="#ff5101" opacity="0.12"/>
+              <rect x="282" y="180" width="0" height="3" rx="1.5" fill="#ff5101" opacity="0.8">
+                <animate attributeName="width" values="0;0;140;140" keyTimes="0;0.5;0.66;1" dur="4.8s" begin="0s" repeatCount="indefinite"/>
+              </rect>
+
+              <text x="282" y="202" font-family="Inter,sans-serif" font-size="9" fill="#181818" font-weight="600">4. Act</text>
+              <rect x="282" y="206" width="140" height="3" rx="1.5" fill="#ff5101" opacity="0.12"/>
+              <rect x="282" y="206" width="0" height="3" rx="1.5" fill="#ff5101" opacity="0.85">
+                <animate attributeName="width" values="0;0;140;140" keyTimes="0;0.75;0.91;1" dur="4.8s" begin="0s" repeatCount="indefinite"/>
+              </rect>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Inbound / Outbound -->
+      <div class="ia-row reverse-desktop">
+        <div class="ia-col">
+          <div class="ia-text">
+            <div class="label">Vigil Intelligence</div>
+            <h3>Inbound &amp; outbound actions, generated continuously</h3>
+            <p>SEO/GEO page briefs, comparison pages, outbound messaging angles, and battlecards — all generated from real competitor signals.</p>
+          </div>
+        </div>
+        <div class="ia-col">
+          <div class="ia-visual">
+            <svg class="io-diagram" viewBox="0 0 460 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <!-- Animated dot that travels along connection paths -->
+                <circle id="dot-orange" r="2.5" fill="#ff5101"/>
+                <circle id="dot-grey" r="2" fill="#cfcfcf"/>
+              </defs>
+
+              <!-- Competition Intelligence box -->
+              <rect x="16" y="42" width="178" height="96" rx="12" fill="#fff" stroke="#e2e2e2">
+                <animate attributeName="stroke" values="#e2e2e2;#ff5101;#e2e2e2" dur="2.4s" begin="0s" repeatCount="indefinite"/>
+              </rect>
+              <text x="30" y="60" font-family="'Fragment Mono',monospace" font-size="8" fill="#919191">COMPETITION INTELLIGENCE</text>
+              <text x="30" y="76" font-family="Inter,sans-serif" font-size="10.5" fill="#181818" font-weight="600">Market signals interpreted</text>
+
+              <!-- Mini network graph inside box -->
+              <line x1="38" y1="112" x2="66" y2="96" stroke="#e4e4e4" stroke-width="1"/>
+              <line x1="38" y1="112" x2="64" y2="126" stroke="#e4e4e4" stroke-width="1"/>
+              <line x1="66" y1="96" x2="64" y2="126" stroke="#e4e4e4" stroke-width="1"/>
+              <line x1="66" y1="96" x2="96" y2="106" stroke="#e4e4e4" stroke-width="1"/>
+              <line x1="96" y1="106" x2="120" y2="94" stroke="#e4e4e4" stroke-width="1"/>
+              <line x1="96" y1="106" x2="126" y2="122" stroke="#e4e4e4" stroke-width="1"/>
+              <line x1="120" y1="94" x2="148" y2="104" stroke="#e4e4e4" stroke-width="1"/>
+              <line x1="126" y1="122" x2="148" y2="104" stroke="#e4e4e4" stroke-width="1"/>
+              <circle cx="38" cy="112" r="5" fill="#ff5101"><animate attributeName="r" values="5;5.5;5" dur="3s" repeatCount="indefinite"/></circle>
+              <circle cx="66" cy="96" r="4.5" fill="#ff7c3a"/>
+              <circle cx="64" cy="126" r="4.5" fill="#ff7c3a"/>
+              <circle cx="96" cy="106" r="5" fill="#4e8fff"><animate attributeName="r" values="5;5.5;5" dur="3s" begin="0.5s" repeatCount="indefinite"/></circle>
+              <circle cx="120" cy="94" r="4.5" fill="#70a5ff"/>
+              <circle cx="126" cy="122" r="4.5" fill="#3aa96a"/>
+              <circle cx="148" cy="104" r="4.5" fill="#2f9b5f"/>
+
+              <!-- Insight Engine box -->
+              <rect x="214" y="50" width="152" height="74" rx="10" fill="#fff" stroke="#e2e2e2">
+                <animate attributeName="stroke" values="#e2e2e2;#ff5101;#e2e2e2" dur="2.4s" begin="0.4s" repeatCount="indefinite"/>
+              </rect>
+              <text x="290" y="72" text-anchor="middle" font-family="'Fragment Mono',monospace" font-size="8" fill="#919191">INSIGHT ENGINE</text>
+              <text x="290" y="92" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" fill="#181818" font-weight="600">Prioritize next actions</text>
+              <text x="290" y="109" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#767676">by impact + urgency</text>
+
+              <!-- Connection: Intelligence → Engine (horizontal) -->
+              <line x1="194" y1="90" x2="214" y2="90" stroke="#d8d8d8" stroke-dasharray="4 4"/>
+              <use href="#dot-orange" opacity="0.7">
+                <animateMotion dur="2s" repeatCount="indefinite" path="M194,90 L214,90" begin="0s"/>
+              </use>
+
+              <!-- Connection: Engine → Inbound (curve down-left) -->
+              <path d="M270 124 C250 146 210 160 154 176" stroke="#d8d8d8" stroke-width="1" stroke-dasharray="4 4" fill="none"/>
+              <path d="M160 173 L154 176 L159 180" stroke="#d8d8d8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <use href="#dot-orange" opacity="0.6">
+                <animateMotion dur="2.4s" repeatCount="indefinite" path="M270,124 C250,146 210,160 154,176" begin="0.6s"/>
+              </use>
+
+              <!-- Connection: Engine → Outbound (curve down-right) -->
+              <path d="M310 124 C325 146 340 160 334 176" stroke="#d8d8d8" stroke-width="1" stroke-dasharray="4 4" fill="none"/>
+              <path d="M328 173 L334 176 L329 180" stroke="#d8d8d8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <use href="#dot-orange" opacity="0.6">
+                <animateMotion dur="2.4s" repeatCount="indefinite" path="M310,124 C325,146 340,160 334,176" begin="0.6s"/>
+              </use>
+
+              <!-- Action Board -->
+              <rect x="16" y="162" width="428" height="124" rx="12" fill="#fff" stroke="#e2e2e2">
+                <animate attributeName="stroke" values="#e2e2e2;#ff5101;#e2e2e2" dur="2.4s" begin="0.8s" repeatCount="indefinite"/>
+              </rect>
+              <line x1="230" y1="164" x2="230" y2="284" stroke="#f0f0f0"/>
+
+              <!-- Inbound side -->
+              <text x="32" y="182" font-family="'Fragment Mono',monospace" font-size="8" fill="#919191">INBOUND</text>
+              <g class="action-card d1">
+                <rect x="26" y="192" width="192" height="34" rx="8" fill="#fff8f4" stroke="#ffd9c7">
+                  <animate attributeName="stroke" values="#ffd9c7;#ff5101;#ffd9c7" dur="2.4s" begin="1s" repeatCount="indefinite"/>
+                </rect>
+                <rect x="36" y="202" width="12" height="12" rx="2" fill="#ff5101" opacity="0.18"/>
+                <path d="M41 206h6M44 203v6" stroke="#ff5101" stroke-width="1.3" stroke-linecap="round"/>
+                <text x="54" y="207" font-family="Inter,sans-serif" font-size="9.5" fill="#181818" font-weight="600">Launch high-intent page</text>
+                <text x="54" y="218" font-family="Inter,sans-serif" font-size="9" fill="#767676">for competitor comparison</text>
+              </g>
+              <g class="action-card d2">
+                <rect x="26" y="240" width="192" height="34" rx="8" fill="#fff8f4" stroke="#ffd9c7">
+                  <animate attributeName="stroke" values="#ffd9c7;#ff5101;#ffd9c7" dur="2.4s" begin="1.3s" repeatCount="indefinite"/>
+                </rect>
+                <rect x="36" y="250" width="12" height="12" rx="2" fill="#ff5101" opacity="0.18"/>
+                <path d="M40.5 260h7M40.5 257h7M40.5 254h7" stroke="#ff5101" stroke-width="1.2" stroke-linecap="round"/>
+                <text x="54" y="255" font-family="Inter,sans-serif" font-size="9.5" fill="#181818" font-weight="600">Publish geo page brief</text>
+                <text x="54" y="266" font-family="Inter,sans-serif" font-size="9" fill="#767676">Austin / Fintech vertical</text>
+              </g>
+
+              <!-- Outbound side -->
+              <text x="246" y="182" font-family="'Fragment Mono',monospace" font-size="8" fill="#919191">OUTBOUND</text>
+              <g class="action-card d3">
+                <rect x="244" y="192" width="192" height="34" rx="8" fill="#fafafa" stroke="#e6e6e6">
+                  <animate attributeName="stroke" values="#e6e6e6;#4e8fff;#e6e6e6" dur="2.4s" begin="1s" repeatCount="indefinite"/>
+                </rect>
+                <rect x="254" y="202" width="12" height="12" rx="2" fill="#4e8fff" opacity="0.18"/>
+                <circle cx="260" cy="208" r="3" stroke="#4e8fff" stroke-width="1.2" fill="none"/>
+                <text x="272" y="207" font-family="Inter,sans-serif" font-size="9.5" fill="#181818" font-weight="600">Target ICP segments</text>
+                <text x="272" y="218" font-family="Inter,sans-serif" font-size="9" fill="#767676">where feature fit is strongest</text>
+              </g>
+              <g class="action-card d4">
+                <rect x="244" y="240" width="192" height="34" rx="8" fill="#fafafa" stroke="#e6e6e6">
+                  <animate attributeName="stroke" values="#e6e6e6;#4e8fff;#e6e6e6" dur="2.4s" begin="1.3s" repeatCount="indefinite"/>
+                </rect>
+                <rect x="254" y="250" width="12" height="12" rx="2" fill="#4e8fff" opacity="0.18"/>
+                <path d="M257 256h6M260 253v6" stroke="#4e8fff" stroke-width="1.2" stroke-linecap="round"/>
+                <text x="272" y="255" font-family="Inter,sans-serif" font-size="9.5" fill="#181818" font-weight="600">Lead with competitor</text>
+                <text x="272" y="266" font-family="Inter,sans-serif" font-size="9" fill="#767676">differentiation angle</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Competitor Landscape -->
+      <div class="ia-row reverse-desktop" style="border-bottom: 0.5px solid var(--border);">
+        <div class="ia-col">
+          <div class="ia-visual">
+            <svg viewBox="0 0 460 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Table header -->
+              <rect x="16" y="12" width="428" height="30" rx="8" fill="#f8f8f8"/>
+              <text x="120" y="32" text-anchor="middle" font-family="'Fragment Mono',monospace" font-size="8" fill="#919191">COMPETITOR</text>
+              <text x="230" y="32" text-anchor="middle" font-family="'Fragment Mono',monospace" font-size="8" fill="#919191">POSITIONING</text>
+              <text x="340" y="32" text-anchor="middle" font-family="'Fragment Mono',monospace" font-size="8" fill="#919191">GEO PAGES</text>
+              <text x="416" y="32" text-anchor="middle" font-family="'Fragment Mono',monospace" font-size="8" fill="#919191">THREAT</text>
+
+              <!-- You row -->
+              <rect x="16" y="48" width="428" height="44" rx="0" fill="#fff8f4"/>
+              <line x1="16" y1="92" x2="444" y2="92" stroke="#f0f0f0"/>
+              <circle cx="40" cy="70" r="5" fill="#ff5101"/>
+              <text x="52" y="67" font-family="Inter,sans-serif" font-size="10.5" fill="#ff5101" font-weight="600">You</text>
+              <text x="52" y="80" font-family="Inter,sans-serif" font-size="9" fill="#b0b0b0">Your company</text>
+              <text x="230" y="74" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#181818">"All-in-one platform"</text>
+              <text x="340" y="74" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#181818">14 cities</text>
+              <text x="416" y="74" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#919191">—</text>
+
+              <!-- Comp A -->
+              <rect x="16" y="92" width="428" height="44" rx="0" fill="#fff"/>
+              <line x1="16" y1="136" x2="444" y2="136" stroke="#f0f0f0"/>
+              <circle cx="40" cy="114" r="5" fill="#4e8fff"/>
+              <text x="52" y="111" font-family="Inter,sans-serif" font-size="10.5" fill="#181818" font-weight="600">Acme Corp</text>
+              <text x="52" y="124" font-family="Inter,sans-serif" font-size="9" fill="#b0b0b0">Direct competitor</text>
+              <text x="230" y="118" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#181818">"Enterprise-first"</text>
+              <text x="340" y="118" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#181818">38 cities</text>
+              <rect x="394" y="106" width="44" height="18" rx="4" fill="#ff5101" opacity="0.1"/>
+              <text x="416" y="119" text-anchor="middle" font-family="'Fragment Mono',monospace" font-size="8" fill="#ff5101">HIGH</text>
+
+              <!-- Comp B -->
+              <rect x="16" y="136" width="428" height="44" rx="0" fill="#fff"/>
+              <line x1="16" y1="180" x2="444" y2="180" stroke="#f0f0f0"/>
+              <circle cx="40" cy="158" r="5" fill="#4e8fff"/>
+              <text x="52" y="155" font-family="Inter,sans-serif" font-size="10.5" fill="#181818" font-weight="600">Betawave</text>
+              <text x="52" y="168" font-family="Inter,sans-serif" font-size="9" fill="#b0b0b0">Direct competitor</text>
+              <text x="230" y="162" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#181818">"Simple &amp; affordable"</text>
+              <text x="340" y="162" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#181818">22 cities</text>
+              <rect x="394" y="150" width="44" height="18" rx="4" fill="#ff5101" opacity="0.1"/>
+              <text x="416" y="163" text-anchor="middle" font-family="'Fragment Mono',monospace" font-size="8" fill="#ff5101">HIGH</text>
+
+              <!-- Comp C -->
+              <rect x="16" y="180" width="428" height="44" rx="0" fill="#fff"/>
+              <line x1="16" y1="224" x2="444" y2="224" stroke="#f0f0f0"/>
+              <circle cx="40" cy="202" r="5" fill="#3aa96a"/>
+              <text x="52" y="199" font-family="Inter,sans-serif" font-size="10.5" fill="#181818" font-weight="600">Gamma AI</text>
+              <text x="52" y="212" font-family="Inter,sans-serif" font-size="9" fill="#b0b0b0">Emerging player</text>
+              <text x="230" y="206" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#181818">"AI-native analytics"</text>
+              <text x="340" y="206" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#181818">6 cities</text>
+              <rect x="394" y="194" width="44" height="18" rx="4" fill="#f59e0b" opacity="0.1"/>
+              <text x="416" y="207" text-anchor="middle" font-family="'Fragment Mono',monospace" font-size="8" fill="#f59e0b">MED</text>
+
+              <!-- Comp D -->
+              <rect x="16" y="224" width="428" height="44" rx="0" fill="#fff"/>
+              <circle cx="40" cy="246" r="5" fill="#cfcfcf"/>
+              <text x="52" y="243" font-family="Inter,sans-serif" font-size="10.5" fill="#181818" font-weight="600">OldGuard</text>
+              <text x="52" y="256" font-family="Inter,sans-serif" font-size="9" fill="#b0b0b0">Legacy incumbent</text>
+              <text x="230" y="250" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#181818">"Trusted by Fortune 500"</text>
+              <text x="340" y="250" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#181818">52 cities</text>
+              <rect x="394" y="238" width="44" height="18" rx="4" fill="#3aa96a" opacity="0.1"/>
+              <text x="416" y="251" text-anchor="middle" font-family="'Fragment Mono',monospace" font-size="8" fill="#3aa96a">LOW</text>
+
+              <!-- Bottom insight bar -->
+              <rect x="16" y="276" width="428" height="22" rx="6" fill="#fff3ee" stroke="#ffd7c4"/>
+              <text x="230" y="291" text-anchor="middle" font-family="'Fragment Mono',monospace" font-size="8" fill="#ff5101">GAP DETECTED: 24 cities where competitors rank and you don't</text>
+            </svg>
+          </div>
+        </div>
+        <div class="ia-col">
+          <div class="ia-text landscape-text">
+            <svg class="landscape-bg" viewBox="0 0 340 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <line x1="28" y1="120" x2="78" y2="92" stroke="#cfcfcf" stroke-width="1.3"/>
+              <line x1="78" y1="92" x2="122" y2="122" stroke="#cfcfcf" stroke-width="1.3"/>
+              <line x1="122" y1="122" x2="174" y2="98" stroke="#cfcfcf" stroke-width="1.3"/>
+              <line x1="174" y1="98" x2="226" y2="112" stroke="#cfcfcf" stroke-width="1.3"/>
+              <line x1="226" y1="112" x2="276" y2="88" stroke="#cfcfcf" stroke-width="1.3"/>
+              <line x1="122" y1="122" x2="226" y2="112" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="78" y1="92" x2="174" y2="98" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="174" y1="98" x2="276" y2="88" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="56" y1="146" x2="122" y2="122" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="96" y1="148" x2="174" y2="98" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="144" y1="148" x2="226" y2="112" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="226" y1="112" x2="286" y2="132" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="196" y1="148" x2="286" y2="132" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="96" y1="148" x2="196" y2="148" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="56" y1="146" x2="96" y2="148" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="308" y1="122" x2="286" y2="132" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="248" y1="74" x2="276" y2="88" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="206" y1="74" x2="226" y2="112" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="132" y1="74" x2="174" y2="98" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="40" y1="84" x2="78" y2="92" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="40" y1="84" x2="28" y2="120" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="40" y1="84" x2="132" y2="74" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="236" y1="62" x2="248" y2="74" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="236" y1="62" x2="206" y2="74" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="318" y1="86" x2="276" y2="88" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="318" y1="86" x2="308" y2="122" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="72" y1="170" x2="96" y2="148" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="72" y1="170" x2="56" y2="146" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="72" y1="170" x2="144" y2="148" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="224" y1="164" x2="196" y2="148" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="224" y1="164" x2="286" y2="132" stroke="#d8d8d8" stroke-width="1.1"/>
+              <line x1="224" y1="164" x2="226" y2="112" stroke="#d8d8d8" stroke-width="1.1"/>
+              <circle cx="28" cy="120" r="5.5" fill="#ff5101"/>
+              <circle cx="78" cy="92" r="5.5" fill="#ff7c3a"/>
+              <circle cx="122" cy="122" r="5.5" fill="#4e8fff"/>
+              <circle cx="174" cy="98" r="5.5" fill="#70a5ff"/>
+              <circle cx="226" cy="112" r="5.5" fill="#3aa96a"/>
+              <circle cx="276" cy="88" r="5.5" fill="#2f9b5f"/>
+              <circle cx="308" cy="122" r="5.5" fill="#cfcfcf"/>
+              <circle cx="56" cy="146" r="5.5" fill="#ff7c3a"/>
+              <circle cx="96" cy="148" r="5.5" fill="#4e8fff"/>
+              <circle cx="144" cy="148" r="5.5" fill="#70a5ff"/>
+              <circle cx="196" cy="148" r="5.5" fill="#3aa96a"/>
+              <circle cx="286" cy="132" r="5.5" fill="#2f9b5f"/>
+              <circle cx="248" cy="74" r="5.5" fill="#3aa96a"/>
+              <circle cx="206" cy="74" r="5.5" fill="#70a5ff"/>
+              <circle cx="132" cy="74" r="5.5" fill="#ff7c3a"/>
+              <circle cx="40" cy="84" r="5.5" fill="#ff5101"/>
+              <circle cx="236" cy="62" r="5.5" fill="#70a5ff"/>
+              <circle cx="318" cy="86" r="5.5" fill="#2f9b5f"/>
+              <circle cx="72" cy="170" r="5.5" fill="#4e8fff"/>
+              <circle cx="224" cy="164" r="5.5" fill="#3aa96a"/>
+              <line x1="276" y1="88" x2="308" y2="122" stroke="#d8d8d8" stroke-width="1.1"/>
+            </svg>
+            <div class="label">Competitor Landscape</div>
+            <h3>Every competitor mapped by features, messaging, and ICP</h3>
+            <p>See where positioning is converging and where whitespace is opening up, so your team can understand the competition and move faster.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CTA Banner -->
+  <div class="cta-banner">
+    <div class="cta-inner">
+      <h2>Turn competitor moves into your next marketing win</h2>
+      <p>Start getting actionable intelligence today and give your growth team the edge they've been missing.</p>
+      <a href="/waitlist" class="btn btn-primary">Request a demo</a>
+      <img class="cta-foxmark" src="vigil_logo_animation.svg" alt="Vigil fox logo">
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer id="about" class="footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <div class="footer-logo">
+          <a href="/" class="logo">
+            <img class="logo-icon" src="vigil_logo_animation.svg" alt="Vigil logo">
+            <span class="logo-text">Vigil</span>
+          </a>
+          <p>Competitive intelligence for growth teams.</p>
+        </div>
+        <div class="footer-socials">
+          <a href="https://www.linkedin.com/" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+          </a>
+          <a href="https://x.com/" aria-label="X">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-col">
+          <h4>Products</h4>
+          <ul>
+            <li><a href="/products">SEO / GEO</a></li>
+            <li><a href="/products">Competitor Tracking</a></li>
+            <li><a href="/products">Battlecards</a></li>
+            <li><a href="/products">Outbound Angles</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="/pricing">Pricing</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/blogs">Blog</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Other</h4>
+          <ul>
+            <li><a href="/privacy-policy">Privacy policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <span>&copy; 2026 Vigil. All rights reserved.</span>
+      <span>Built with purpose.</span>
+    </div>
+  </div>
+
+  <script>
+    history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+
+    window.addEventListener('load', () => {
+      document.body.classList.add('page-ready');
+      window.scrollTo(0, 0);
+
+      requestAnimationFrame(() => {
+        const elements = document.querySelectorAll('.ia-row, .ia-header, .cta-inner, .footer-inner, .footer-bottom-inner');
+
+        elements.forEach(el => {
+          el.classList.add('fade-in');
+        });
+
+        let scrollStarted = false;
+
+        const observer = new IntersectionObserver((entries) => {
+          if (!scrollStarted) return;
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+
+        elements.forEach(el => observer.observe(el));
+
+        const revealVisibleNow = () => {
+          elements.forEach(el => {
+            if (el.classList.contains('visible')) return;
+            const rect = el.getBoundingClientRect();
+            const vh = window.innerHeight || document.documentElement.clientHeight;
+            if (rect.top < vh * 0.85 && rect.bottom > vh * 0.15) {
+              el.classList.add('visible');
+              observer.unobserve(el);
+            }
+          });
+        };
+
+        // Ensure any panel already in view after reload is visible immediately.
+        revealVisibleNow();
+
+        window.addEventListener('scroll', () => {
+          scrollStarted = true;
+          revealVisibleNow();
+        }, { once: true });
+      });
+    });
+  </script>
+
+</body>
+</html>

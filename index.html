@@ -97,14 +97,14 @@
       margin: 0 auto;
       border-left: 0.5px solid var(--border);
       border-right: 0.5px solid var(--border);
-      padding: 80px 40px 96px;
+      padding: 80px 360px 96px 40px;
       position: relative;
       overflow: hidden;
     }
     .hero-copy {
       max-width: 620px;
       text-align: left;
-      padding-right: 80px;
+      padding-right: 0;
     }
     .hero-fox-scene {
       position: absolute;
@@ -611,6 +611,21 @@
 
 
     /* ── Responsive ── */
+    @media (max-width: 1100px) {
+      .hero { padding: 0 24px; }
+      .hero-inner {
+        padding: 72px 32px 88px;
+      }
+      .hero-copy,
+      .hero h1,
+      .hero p {
+        max-width: 100%;
+      }
+      .hero h1 { font-size: 54px; }
+      .hero-fox-scene { display: none; }
+      .hero-buttons { flex-wrap: wrap; }
+    }
+
     @media (max-width: 768px) {
       .navbar { padding: 0 16px; }
       .nav-links { display: none; }
@@ -623,12 +638,7 @@
         padding-right: 0;
       }
       .hero h1 { font-size: 38px; }
-      .hero-fox-scene {
-        right: 8px;
-        bottom: 0;
-        width: 260px;
-        height: 260px;
-      }
+      .hero-fox-scene { display: none; }
       .hero-buttons { flex-wrap: wrap; }
       .in-action { padding: 40px 16px; }
       .ia-header h2 { font-size: 28px; }
@@ -646,6 +656,7 @@
       .footer-right { grid-template-columns: repeat(2, 1fr); }
       .footer-bottom { padding: 0 16px; }
     }
+
   </style>
 </head>
 <body id="top">

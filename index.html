@@ -94,6 +94,7 @@
     }
     .hero-inner {
       max-width: 1200px;
+      width: 100%;
       margin: 0 auto;
       border-left: 0.5px solid var(--border);
       border-right: 0.5px solid var(--border);
@@ -108,7 +109,7 @@
     }
     .hero-fox-scene {
       position: absolute;
-      right: 18px;
+      right: 0;
       bottom: 0;
       width: 620px;
       height: 620px;
@@ -123,7 +124,6 @@
       max-height: none;
       object-fit: contain;
       object-position: top right;
-      animation: heroFadeUp 1s ease-out 0.3s both;
       transform-origin: bottom right;
     }
     .hero h1 {
@@ -134,7 +134,6 @@
       letter-spacing: -0.02em;
       max-width: 620px;
       margin: 0 0 30px;
-      animation: heroFadeUp 0.8s ease-out 0.1s both;
     }
     .hero p {
       font-size: 16px;
@@ -142,84 +141,14 @@
       color: var(--grey-dark);
       max-width: 480px;
       margin: 0 0 40px;
-      animation: heroFadeUp 0.8s ease-out 0.25s both;
     }
     .hero-buttons {
       display: flex;
       gap: 16px;
       justify-content: flex-start;
-      animation: heroFadeUp 0.8s ease-out 0.4s both;
-    }
-    @keyframes heroFadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── Floating background particles ── */
-    .hero-particles {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-      display: none;
     }
     .hero-copy { position: relative; z-index: 2; }
     .hero-fox-scene { z-index: 2; }
-    .particle {
-      position: absolute;
-      will-change: transform;
-      color: var(--c, #ff5101);
-    }
-    .particle svg {
-      display: block;
-      transform: scale(1.28);
-      transform-origin: center;
-    }
-    .particle .cookie-wedge-left,
-    .particle .cookie-wedge-right {
-      transform-box: fill-box;
-      transform-origin: 50% 50%;
-      will-change: transform;
-    }
-    /* Animation parked for now so it can be restored later.
-    .particle .cookie-wedge-left { animation: cookieOpenLeft 1.9s ease-in-out infinite; }
-    .particle .cookie-wedge-right { animation: cookieOpenRight 1.9s ease-in-out infinite; }
-    */
-    .particle.zip-right {
-      /* animation-name: zipRight;
-      animation-duration: calc(var(--speed) * 3.6);
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-      animation-delay: calc(var(--delay, 0s) * -1); */
-    }
-    .particle.zip-left {
-      /* animation-name: zipLeft;
-      animation-duration: calc(var(--speed) * 3.6);
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-      animation-delay: calc(var(--delay, 0s) * -1); */
-    }
-    @keyframes zipRight {
-      0% { transform: translateX(-180px); opacity: 0; }
-      2% { opacity: var(--op, 0.4); }
-      98% { opacity: var(--op, 0.4); }
-      100% { transform: translateX(calc(100vw + 180px)); opacity: 0; }
-    }
-    @keyframes zipLeft {
-      0% { transform: translateX(calc(100vw + 180px)); opacity: 0; }
-      2% { opacity: var(--op, 0.4); }
-      98% { opacity: var(--op, 0.4); }
-      100% { transform: translateX(-180px); opacity: 0; }
-    }
-    @keyframes cookieOpenLeft {
-      0%, 100% { transform: translateX(0) rotate(0deg) scaleY(1); }
-      50% { transform: translateX(-1.4px) rotate(-14deg) scaleY(0.95); }
-    }
-    @keyframes cookieOpenRight {
-      0%, 100% { transform: translateX(0) rotate(0deg) scaleY(1); }
-      50% { transform: translateX(1.4px) rotate(14deg) scaleY(0.95); }
-    }
     /* ── Label component ── */
     .label {
       font-family: 'Fragment Mono', monospace;
@@ -247,6 +176,7 @@
     }
     .in-action-container {
       max-width: 1200px;
+      width: 100%;
       margin: 0 auto;
       border: 0.5px solid var(--border);
       border-bottom: none;
@@ -627,6 +557,15 @@
       .hero-inner {
         padding: 72px 32px 88px;
       }
+      .in-action { padding: 0 24px 40px; }
+      .ia-row,
+      .ia-row.reverse-desktop { flex-direction: column; }
+      .ia-col { width: 100%; }
+      .ia-col.text-col { order: 1; }
+      .ia-col.visual-col { order: 2; }
+      .ia-col:first-child,
+      .ia-row.reverse-desktop .ia-col:last-child { border-right: none; }
+      .ia-col.text-col { border-bottom: 0.5px solid var(--border); }
       .hero-copy,
       .hero h1,
       .hero p {
@@ -643,7 +582,12 @@
       .hero { padding: 0 16px; }
       .hero-inner {
         padding: 50px 20px 72px;
+        border-bottom: 0.5px solid var(--border);
       }
+      .in-action {
+        margin-top: 0;
+      }
+      .in-action-container { border-top: none; }
       .hero-copy {
         max-width: 100%;
         padding-right: 0;
@@ -690,35 +634,8 @@
   <!-- Hero -->
   <section class="hero">
     <div class="hero-inner">
-      <div class="hero-particles" aria-hidden="true">
-        <!-- fortune-cookie wedges -->
-        <div class="particle zip-right" style="top:6%;--speed:3s;--delay:0s;--op:0.35;--c:#ff5101;"><svg width="18" height="14" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-left" style="top:10%;--speed:3.5s;--delay:1.2s;--op:0.25;--c:#4e8fff;"><svg width="14" height="11" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-right" style="top:15%;--speed:4s;--delay:0.5s;--op:0.2;--c:#3aa96a;"><svg width="10" height="8" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-left" style="top:22%;--speed:2.8s;--delay:0.8s;--op:0.3;--c:#ff5101;"><svg width="16" height="12" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-right" style="top:26%;--speed:3.2s;--delay:2s;--op:0.2;--c:#3aa96a;"><svg width="12" height="9" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-left" style="top:20%;--speed:4.5s;--delay:3s;--op:0.15;--c:#ff5101;"><svg width="9" height="7" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-right" style="top:34%;--speed:3.6s;--delay:0.3s;--op:0.3;--c:#4e8fff;"><svg width="19" height="14" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-left" style="top:38%;--speed:2.5s;--delay:1.5s;--op:0.35;--c:#ff5101;"><svg width="16" height="12" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-right" style="top:36%;--speed:3.8s;--delay:2.8s;--op:0.18;--c:#4e8fff;"><svg width="9" height="7" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-left" style="top:45%;--speed:3.3s;--delay:0.2s;--op:0.25;--c:#3aa96a;"><svg width="18" height="14" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-right" style="top:48%;--speed:2.6s;--delay:1.8s;--op:0.3;--c:#ff5101;"><svg width="14" height="11" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-left" style="top:50%;--speed:4.2s;--delay:3.5s;--op:0.15;--c:#3aa96a;"><svg width="9" height="7" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-right" style="top:56%;--speed:3s;--delay:0.7s;--op:0.3;--c:#4e8fff;"><svg width="16" height="12" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-left" style="top:60%;--speed:2.9s;--delay:2.2s;--op:0.25;--c:#ff5101;"><svg width="19" height="14" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-right" style="top:58%;--speed:3.4s;--delay:0s;--op:0.2;--c:#ff5101;"><svg width="10" height="8" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-left" style="top:67%;--speed:3.1s;--delay:1s;--op:0.35;--c:#3aa96a;"><svg width="14" height="11" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-right" style="top:72%;--speed:2.7s;--delay:2.5s;--op:0.25;--c:#4e8fff;"><svg width="18" height="14" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-left" style="top:70%;--speed:4s;--delay:0.4s;--op:0.15;--c:#4e8fff;"><svg width="9" height="7" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-right" style="top:78%;--speed:3.5s;--delay:1.6s;--op:0.3;--c:#ff5101;"><svg width="16" height="12" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-left" style="top:82%;--speed:2.8s;--delay:0.6s;--op:0.2;--c:#4e8fff;"><svg width="12" height="9" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-right" style="top:80%;--speed:3.9s;--delay:3.2s;--op:0.18;--c:#3aa96a;"><svg width="9" height="7" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-left" style="top:88%;--speed:3.2s;--delay:0.9s;--op:0.3;--c:#ff5101;"><svg width="18" height="14" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-right" style="top:92%;--speed:2.6s;--delay:2.1s;--op:0.25;--c:#3aa96a;"><svg width="14" height="11" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-        <div class="particle zip-left" style="top:90%;--speed:4.3s;--delay:3.8s;--op:0.15;--c:#ff5101;"><svg width="9" height="7" viewBox="0 0 24 16" fill="none"><path class="cookie-wedge-left" d="M12 8L3.2 3.3L6.4 8L3.2 12.7Z" fill="currentColor"/><path class="cookie-wedge-right" d="M12 8L20.8 3.3L17.6 8L20.8 12.7Z" fill="currentColor"/></svg></div>
-      </div>
       <div class="hero-copy">
-        <h1>Your intelligent GTM platform.</h1>
+        <h1>The market-aware GTM platform</h1>
         <p>Vigil is your competitive intelligence system: monitor competitors, track every move, and turn those signals into marketing actions your team can ship this week.</p>
         <div class="hero-buttons">
           <a href="mailto:govigilai@gmail.com" class="btn btn-primary">Request a demo</a>
@@ -736,14 +653,14 @@
 
       <!-- Row 1: Continuous Ingestion -->
       <div class="ia-row">
-        <div class="ia-col">
+        <div class="ia-col text-col">
           <div class="ia-text">
             <div class="label">Ingestion</div>
             <h3>Continuous ingestion from every channel</h3>
             <p>Websites, pricing pages, LinkedIn, G2, Capterra, API docs, and changelogs, all monitored on a schedule so new changes are spotted right away.</p>
           </div>
         </div>
-        <div class="ia-col">
+        <div class="ia-col visual-col">
           <div class="ia-visual">
             <svg class="io-diagram" viewBox="0 0 460 300" fill="none" xmlns="http://www.w3.org/2000/svg">
               <!-- Source cards with icons -->
@@ -843,14 +760,14 @@
 
       <!-- Row 2: Inbound / Outbound -->
       <div class="ia-row reverse-desktop">
-        <div class="ia-col">
+        <div class="ia-col text-col">
           <div class="ia-text">
             <div class="label">Vigil Intelligence</div>
             <h3>Inbound &amp; outbound actions, generated continuously</h3>
             <p>SEO and GEO actions for inbound and targeted marketing wedges for outbound. All generated from real customer and competitor signals.</p>
           </div>
         </div>
-        <div class="ia-col">
+        <div class="ia-col visual-col">
           <div class="ia-visual">
             <svg class="io-diagram" viewBox="0 0 460 300" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
@@ -965,7 +882,7 @@
 
       <!-- Row 3: Competitor Landscape -->
       <div class="ia-row reverse-desktop" style="border-bottom: 0.5px solid var(--border);">
-        <div class="ia-col">
+        <div class="ia-col visual-col">
           <div class="ia-visual">
             <svg viewBox="0 0 460 300" fill="none" xmlns="http://www.w3.org/2000/svg">
               <!-- Table header -->
@@ -1034,7 +951,7 @@
             </svg>
           </div>
         </div>
-        <div class="ia-col">
+        <div class="ia-col text-col">
           <div class="ia-text landscape-text">
             <svg class="landscape-bg" viewBox="0 0 340 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <line x1="28" y1="120" x2="78" y2="92" stroke="#cfcfcf" stroke-width="1.3"/>
@@ -1093,7 +1010,7 @@
             </svg>
             <div class="label">Competitor Landscape</div>
             <h3>Every competitor mapped by features, messaging, and ICP</h3>
-            <p>Continuously updated as competitors ship new features and change messaging, so your team always has the latest view of the landscape and where opportunities are opening up.</p>
+            <p>Continuously updated as competitors ship new features	 and change messaging, so your team always has the latest view of the landscape and where opportunities are opening up.</p>
           </div>
         </div>
       </div>

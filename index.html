@@ -495,8 +495,8 @@
     /* ── Scroll animations ── */
     .fade-in {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+      transform: translateY(18px);
+      transition: opacity 0.28s ease-out, transform 0.28s ease-out;
       will-change: transform, opacity;
     }
     .fade-in.visible {
@@ -1063,6 +1063,31 @@
     history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
+    const scrollToSection = (targetId) => {
+      const target = document.querySelector(targetId);
+      if (!target) return;
+
+      const navbar = document.querySelector('.navbar');
+      const offset = navbar ? navbar.offsetHeight : 0;
+      const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
+
+      window.scrollTo({ top, behavior: 'smooth' });
+
+      if (window.location.hash) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    };
+
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const targetId = link.getAttribute('href');
+        if (!targetId || targetId === '#') return;
+
+        event.preventDefault();
+        scrollToSection(targetId);
+      });
+    });
+
     window.addEventListener('load', () => {
       document.body.classList.add('page-ready');
       window.scrollTo(0, 0);
@@ -1074,17 +1099,17 @@
           el.classList.add('fade-in');
         });
 
-        let scrollStarted = false;
-
         const observer = new IntersectionObserver((entries) => {
-          if (!scrollStarted) return;
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('visible');
               observer.unobserve(entry.target);
             }
           });
-        }, { threshold: 0.15 });
+        }, {
+          threshold: 0.05,
+          rootMargin: '0px 0px -8% 0px'
+        });
 
         elements.forEach(el => observer.observe(el));
 
@@ -1103,10 +1128,7 @@
         // Ensure any panel already in view after reload is visible immediately.
         revealVisibleNow();
 
-        window.addEventListener('scroll', () => {
-          scrollStarted = true;
-          revealVisibleNow();
-        }, { once: true });
+        window.addEventListener('scroll', revealVisibleNow, { passive: true });
       });
     });
   </script>

@@ -243,7 +243,7 @@
 
     /* ── In Action section ── */
     .in-action {
-      padding: 40px 60px;
+      padding: 0 60px 40px;
     }
     .in-action-container {
       max-width: 1200px;
@@ -440,6 +440,16 @@
       line-height: 1.6;
       color: var(--grey-mid);
     }
+    .footer-contact-link {
+      font-size: 14px;
+      color: var(--grey-mid);
+      text-decoration: none;
+      transition: color 0.15s;
+      width: fit-content;
+    }
+    .footer-contact-link:hover {
+      color: var(--white);
+    }
     .footer-socials {
       display: flex;
       gap: 16px;
@@ -464,9 +474,10 @@
       fill: var(--grey-mid);
     }
     .footer-right {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 40px 60px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      min-width: 0;
     }
     .footer-col h4 {
       font-family: 'Inter', sans-serif;
@@ -672,7 +683,7 @@
         <li><a href="#features">Features</a></li>
         <li><a href="#about">About</a></li>
       </ul>
-      <a href="/waitlist" class="btn btn-primary">Join waitlist</a>
+      <a href="mailto:govigilai@gmail.com" class="btn btn-primary">Request a demo</a>
     </div>
   </nav>
 
@@ -710,8 +721,7 @@
         <h1>Your intelligent GTM platform.</h1>
         <p>Vigil is your competitive intelligence system: monitor competitors, track every move, and turn those signals into marketing actions your team can ship this week.</p>
         <div class="hero-buttons">
-          <a href="/waitlist" class="btn btn-primary">Join waitlist</a>
-          <a href="/contact" class="btn btn-secondary">Request a demo</a>
+          <a href="mailto:govigilai@gmail.com" class="btn btn-primary">Request a demo</a>
         </div>
       </div>
       <div class="hero-fox-scene">
@@ -730,7 +740,7 @@
           <div class="ia-text">
             <div class="label">Ingestion</div>
             <h3>Continuous ingestion from every channel</h3>
-            <p>Websites, pricing pages, LinkedIn, G2, Capterra, API docs, and changelogs — all monitored and diffed on a schedule.</p>
+            <p>Websites, pricing pages, LinkedIn, G2, Capterra, API docs, and changelogs, all monitored on a schedule so new changes are spotted right away.</p>
           </div>
         </div>
         <div class="ia-col">
@@ -803,25 +813,25 @@
               <text x="351" y="94" text-anchor="middle" font-family="'Fragment Mono',monospace" font-size="10" fill="#ff5101">Vigil Intelligence</text>
 
               <!-- Sequential process steps -->
-              <text x="282" y="124" font-family="Inter,sans-serif" font-size="9" fill="#181818" font-weight="600">1. Ingest</text>
+              <text x="282" y="124" font-family="Inter,sans-serif" font-size="9" fill="#181818" font-weight="600">1. Monitor</text>
               <rect x="282" y="128" width="140" height="3" rx="1.5" fill="#ff5101" opacity="0.12"/>
               <rect x="282" y="128" width="0" height="3" rx="1.5" fill="#ff5101" opacity="0.8">
                 <animate attributeName="width" values="0;140;140" keyTimes="0;0.16;1" dur="4.8s" begin="0s" repeatCount="indefinite"/>
               </rect>
 
-              <text x="282" y="150" font-family="Inter,sans-serif" font-size="9" fill="#181818" font-weight="600">2. Diff</text>
+              <text x="282" y="150" font-family="Inter,sans-serif" font-size="9" fill="#181818" font-weight="600">2. Detect changes</text>
               <rect x="282" y="154" width="140" height="3" rx="1.5" fill="#ff5101" opacity="0.12"/>
               <rect x="282" y="154" width="0" height="3" rx="1.5" fill="#ff5101" opacity="0.8">
                 <animate attributeName="width" values="0;0;140;140" keyTimes="0;0.25;0.41;1" dur="4.8s" begin="0s" repeatCount="indefinite"/>
               </rect>
 
-              <text x="282" y="176" font-family="Inter,sans-serif" font-size="9" fill="#181818" font-weight="600">3. Reason</text>
+              <text x="282" y="176" font-family="Inter,sans-serif" font-size="9" fill="#181818" font-weight="600">3. Analyze</text>
               <rect x="282" y="180" width="140" height="3" rx="1.5" fill="#ff5101" opacity="0.12"/>
               <rect x="282" y="180" width="0" height="3" rx="1.5" fill="#ff5101" opacity="0.8">
                 <animate attributeName="width" values="0;0;140;140" keyTimes="0;0.5;0.66;1" dur="4.8s" begin="0s" repeatCount="indefinite"/>
               </rect>
 
-              <text x="282" y="202" font-family="Inter,sans-serif" font-size="9" fill="#181818" font-weight="600">4. Act</text>
+              <text x="282" y="202" font-family="Inter,sans-serif" font-size="9" fill="#181818" font-weight="600">4. Recommend actions</text>
               <rect x="282" y="206" width="140" height="3" rx="1.5" fill="#ff5101" opacity="0.12"/>
               <rect x="282" y="206" width="0" height="3" rx="1.5" fill="#ff5101" opacity="0.85">
                 <animate attributeName="width" values="0;0;140;140" keyTimes="0;0.75;0.91;1" dur="4.8s" begin="0s" repeatCount="indefinite"/>
@@ -837,7 +847,7 @@
           <div class="ia-text">
             <div class="label">Vigil Intelligence</div>
             <h3>Inbound &amp; outbound actions, generated continuously</h3>
-            <p>SEO/GEO page briefs, comparison pages, outbound messaging angles, and battlecards — all generated from real competitor signals.</p>
+            <p>SEO and GEO actions for inbound and targeted marketing wedges for outbound. All generated from real customer and competitor signals.</p>
           </div>
         </div>
         <div class="ia-col">
@@ -915,8 +925,8 @@
                 </rect>
                 <rect x="36" y="202" width="12" height="12" rx="2" fill="#ff5101" opacity="0.18"/>
                 <path d="M41 206h6M44 203v6" stroke="#ff5101" stroke-width="1.3" stroke-linecap="round"/>
-                <text x="54" y="207" font-family="Inter,sans-serif" font-size="9.5" fill="#181818" font-weight="600">Launch high-intent page</text>
-                <text x="54" y="218" font-family="Inter,sans-serif" font-size="9" fill="#767676">for competitor comparison</text>
+                <text x="54" y="207" font-family="Inter,sans-serif" font-size="9.5" fill="#181818" font-weight="600">Launch SEO comparison page</text>
+                <text x="54" y="218" font-family="Inter,sans-serif" font-size="9" fill="#767676">for high-intent inbound demand</text>
               </g>
               <g class="action-card d2">
                 <rect x="26" y="240" width="192" height="34" rx="8" fill="#fff8f4" stroke="#ffd9c7">
@@ -924,8 +934,8 @@
                 </rect>
                 <rect x="36" y="250" width="12" height="12" rx="2" fill="#ff5101" opacity="0.18"/>
                 <path d="M40.5 260h7M40.5 257h7M40.5 254h7" stroke="#ff5101" stroke-width="1.2" stroke-linecap="round"/>
-                <text x="54" y="255" font-family="Inter,sans-serif" font-size="9.5" fill="#181818" font-weight="600">Publish geo page brief</text>
-                <text x="54" y="266" font-family="Inter,sans-serif" font-size="9" fill="#767676">Austin / Fintech vertical</text>
+                <text x="54" y="255" font-family="Inter,sans-serif" font-size="9.5" fill="#181818" font-weight="600">Ship GEO content actions</text>
+                <text x="54" y="266" font-family="Inter,sans-serif" font-size="9" fill="#767676">for key markets and verticals</text>
               </g>
 
               <!-- Outbound side -->
@@ -936,8 +946,8 @@
                 </rect>
                 <rect x="254" y="202" width="12" height="12" rx="2" fill="#4e8fff" opacity="0.18"/>
                 <circle cx="260" cy="208" r="3" stroke="#4e8fff" stroke-width="1.2" fill="none"/>
-                <text x="272" y="207" font-family="Inter,sans-serif" font-size="9.5" fill="#181818" font-weight="600">Target ICP segments</text>
-                <text x="272" y="218" font-family="Inter,sans-serif" font-size="9" fill="#767676">where feature fit is strongest</text>
+                <text x="272" y="207" font-family="Inter,sans-serif" font-size="9.5" fill="#181818" font-weight="600">Target best-fit accounts</text>
+                <text x="272" y="218" font-family="Inter,sans-serif" font-size="9" fill="#767676">based on competitor positioning</text>
               </g>
               <g class="action-card d4">
                 <rect x="244" y="240" width="192" height="34" rx="8" fill="#fafafa" stroke="#e6e6e6">
@@ -945,8 +955,8 @@
                 </rect>
                 <rect x="254" y="250" width="12" height="12" rx="2" fill="#4e8fff" opacity="0.18"/>
                 <path d="M257 256h6M260 253v6" stroke="#4e8fff" stroke-width="1.2" stroke-linecap="round"/>
-                <text x="272" y="255" font-family="Inter,sans-serif" font-size="9.5" fill="#181818" font-weight="600">Lead with competitor</text>
-                <text x="272" y="266" font-family="Inter,sans-serif" font-size="9" fill="#767676">differentiation angle</text>
+                <text x="272" y="255" font-family="Inter,sans-serif" font-size="9.5" fill="#181818" font-weight="600">Lead with the right wedge</text>
+                <text x="272" y="266" font-family="Inter,sans-serif" font-size="9" fill="#767676">for competitor-aware outreach</text>
               </g>
             </svg>
           </div>
@@ -1083,7 +1093,7 @@
             </svg>
             <div class="label">Competitor Landscape</div>
             <h3>Every competitor mapped by features, messaging, and ICP</h3>
-            <p>See where positioning is converging and where whitespace is opening up, so your team can understand the competition and move faster.</p>
+            <p>Continuously updated as competitors ship new features and change messaging, so your team always has the latest view of the landscape and where opportunities are opening up.</p>
           </div>
         </div>
       </div>
@@ -1096,7 +1106,7 @@
     <div class="cta-inner">
       <h2>Turn competitor moves into your next marketing win</h2>
       <p>Start getting actionable intelligence today and give your growth team the edge they've been missing.</p>
-      <a href="/waitlist" class="btn btn-primary">Request a demo</a>
+      <a href="mailto:govigilai@gmail.com" class="btn btn-primary">Request a demo</a>
       <img class="cta-foxmark" src="vigil_logo_animation.svg" alt="Vigil fox logo">
     </div>
   </div>
@@ -1112,39 +1122,15 @@
           </a>
           <p>Competitive intelligence for growth teams.</p>
         </div>
-        <div class="footer-socials">
-          <a href="https://www.linkedin.com/" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
-          </a>
-          <a href="https://x.com/" aria-label="X">
-            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
-        </div>
       </div>
       <div class="footer-right">
-        <div class="footer-col">
-          <h4>Products</h4>
-          <ul>
-            <li><a href="/products">SEO / GEO</a></li>
-            <li><a href="/products">Competitor Tracking</a></li>
-            <li><a href="/products">Battlecards</a></li>
-            <li><a href="/products">Outbound Angles</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="/pricing">Pricing</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/blogs">Blog</a></li>
-            <li><a href="/contact">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Other</h4>
-          <ul>
-            <li><a href="/privacy-policy">Privacy policy</a></li>
-          </ul>
+        <div class="footer-socials">
+          <a href="https://www.linkedin.com/company/govigilai" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+          </a>
+          <a href="mailto:govigilai@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24"><path d="M3 6.75A1.75 1.75 0 0 1 4.75 5h14.5A1.75 1.75 0 0 1 21 6.75v10.5A1.75 1.75 0 0 1 19.25 19H4.75A1.75 1.75 0 0 1 3 17.25zm1.8-.25 7.2 5.4 7.2-5.4zM19.5 8.375l-6.975 5.231a.875.875 0 0 1-1.05 0L4.5 8.375v8.875c0 .138.112.25.25.25h14.5a.25.25 0 0 0 .25-.25z"/></svg>
+          </a>
         </div>
       </div>
     </div>

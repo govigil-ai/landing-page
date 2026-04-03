@@ -2,13 +2,13 @@
   <style>
     .fox-part {
       opacity: 0;
-      animation: foxIn 0.6s ease-out forwards;
+      animation: foxIn 0.8s ease-out forwards;
     }
-    .fp-1 { animation-delay: 0s; }
-    .fp-2 { animation-delay: 0.12s; }
-    .fp-3 { animation-delay: 0.24s; }
-    .fp-4 { animation-delay: 0.36s; }
-    .fp-5 { animation-delay: 0.48s; }
+    .fp-1 { animation-delay: 0.2s; }
+    .fp-2 { animation-delay: 0.4s; }
+    .fp-3 { animation-delay: 0.6s; }
+    .fp-4 { animation-delay: 0.8s; }
+    .fp-5 { animation-delay: 1.0s; }
     @keyframes foxIn {
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }

@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vigil — GTM Intelligence Platform</title>
   <link rel="icon" type="image/svg+xml" href="logo_vigil_done.svg">
-  <link rel="preload" as="image" href="vigil_logo_animation.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1010,20 +1009,15 @@
     history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
-    // Reset all animated SVG logos so their animation starts from frame 0
-    // after the file is fully fetched, regardless of network latency.
+    // Reset all animated SVG logos by cache-busting with a timestamp
     function resetLogoAnimations() {
-      document.querySelectorAll('img[src="vigil_logo_animation.svg"]').forEach(img => {
-        const src = img.src;
-        img.src = '';
-        img.src = src;
+      const t = Date.now();
+      document.querySelectorAll('img[src*="vigil_logo_animation"]').forEach(img => {
+        img.src = 'vigil_logo_animation.svg?v=' + t;
       });
     }
-    if (document.readyState === 'complete') {
-      resetLogoAnimations();
-    } else {
-      window.addEventListener('load', resetLogoAnimations);
-    }
+    resetLogoAnimations();
+    window.addEventListener('pageshow', resetLogoAnimations);
 
     const scrollToSection = (targetId) => {
       const target = document.querySelector(targetId);
